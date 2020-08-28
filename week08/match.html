@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="main">
+    <div id="app" class="duo">css</div>
+  </div>
+  <script>
+  
+  function match(selector, element) {
+    if (!selector || !element.attributes) {
+      return false;
+    }
+    if (element.hasChildNodes()) {
+      const elements = element.children;
+      for (let i = 0; i < elements.length; i++) {
+        const child = elements[i];
+        return selectorFn(selector, child);
+      }
+    } else {
+      return selectorFn(selector, element);
+    }
+  }
+  
+  
+    function selectorFn(selector, element) {
+      const regPattern = /(#[a-zA-Z]+[_a-zA-Z0-9-]*?)|(\.-?[_a-zA-Z]+[_a-zA-Z0-9-]*)|([a-z]+)/g;
+      const selectorArray = selector.match(regPattern);
+      let isMatch = false;
+      if (element.hasAttributes()) {
+        const attributes = element.attributes;
+        for (let i = 0; i < attributes.length; i++) {
+          const attr = attributes[i];
+          for (const sa of selectorArray) {
+            if (sa.charAt(0) === "#") {
+              if (attr && attr.value === sa.replace("#", "")) {
+                isMatch = true;
+              }
+            } else if (sa.charAt(0) === ".") {
+              if (attr && attr.value === sa.replace(".", "")) {
+                isMatch = true;
+              }
+            }
+          }
+        }
+      } else {
+        if (element.tagName.toLowerCase() === sa) {
+          isMatch = true;
+        }
+      }
+      return isMatch;
+    }
+
+    
+
+    console.log(match("#app.duo", document.getElementById("main")));
+  </script>
+</body>
+
+</html>
